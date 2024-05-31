@@ -11,5 +11,6 @@ router.get("/",controller.getStudents);
 router.get("/:id",controller.getStudentsByID);
 router.post("/",controller.addStudents)
 router.delete("/:id",controller.removeStudentsByID)
+router.put("/:id",controller.updateStudentsByID)
 
 module.exports=router;

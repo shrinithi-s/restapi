@@ -40,7 +40,6 @@ const addStudents=(req,res)=>{
 };
 
 const removeStudentsByID=(req,res)=>{
-    //console.log(req.params)
     const id=parseInt(req.params.id) //get the user params
 
     //check if the id already exist or not
@@ -60,9 +59,31 @@ const removeStudentsByID=(req,res)=>{
     });
 };
 
+const updateStudentsByID=(req,res)=>{
+    const id=parseInt(req.params.id) 
+    const {name}=req.body
+
+    //check if the id already exist or not
+    pool.query(queries.getStudentsByID,[id],(error,results)=>{ 
+        const noStudent=!results.rows.length
+        if(noStudent){
+            res.send("No student with that id exist")
+        }
+    
+    //if exist then update
+    pool.query(queries.updateStudent,[name,id],(error,results)=>{
+        if(error) throw error;
+        res.status(200).send("Student is updated")
+    })
+
+    
+    });
+};
+
 module.exports={
     getStudents,
     getStudentsByID,
     addStudents,
-    removeStudentsByID
+    removeStudentsByID,
+    updateStudentsByID,
 };
