@@ -9,6 +9,6 @@ const router=Router();
 
 router.get("/",controller.getStudents);
 router.get("/:id",controller.getStudentsByID);
-
+router.post("/",controller.addStudents)
 
 module.exports=router;
