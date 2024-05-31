@@ -10,7 +10,7 @@ const getStudents=(req,res)=>{
 };
 
 const getStudentsByID=(req,res)=>{
-    
+    //console.log(req.params)
     const id=parseInt(req.params.id) //get the user params
 
     pool.query(queries.getStudentsByID,[id],(error,results)=>{
@@ -24,6 +24,7 @@ const addStudents=(req,res)=>{
 
     //check if email exist
     pool.query(queries.checkEmailExists,[email],(error,results)=>{
+       // console.log(results)
         if(results.rows.length){
             res.send("Email already exist")
         }
@@ -36,10 +37,32 @@ const addStudents=(req,res)=>{
     });
 })
 
-}
+};
+
+const removeStudentsByID=(req,res)=>{
+    //console.log(req.params)
+    const id=parseInt(req.params.id) //get the user params
+
+    //check if the id already exist or not
+    pool.query(queries.getStudentsByID,[id],(error,results)=>{ 
+        const noStudent=!results.rows.length
+        if(noStudent){
+            res.send("No student with that id exist")
+        }
+    
+    //if exist delete
+    pool.query(queries.removeStudent,[id],(error,results)=>{
+        if(error) throw error;
+        res.status(201).send("Student deleted from database")
+    })
+
+    
+    });
+};
 
 module.exports={
     getStudents,
     getStudentsByID,
     addStudents,
+    removeStudentsByID
 };
